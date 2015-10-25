@@ -1,0 +1,30 @@
+{
+  "name": "mascame/extender",
+  "description": "Easily manage extensions or plugins",
+  "homepage": "https://github.com/marcmascarell/laravel-artificer",
+  "keywords": [
+    "extend",
+    "extensible",
+    "plugin installer",
+    "plugins"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marc Mascarell",
+      "email": "marcmascarell@gmail.com"
+    }
+  ],
+  "require": {
+    "mascame/arrayer": "3.*"
+  },
+  "require-dev": {
+    "sami/sami": "2.0.0",
+    "codeception/codeception": "2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mascame\\Extender\\": "src/"
+    }
+  }
+}
