@@ -13,6 +13,13 @@ interface BooterInterface {
     public function boot($instance, $name);
 
     /**
+     * @param $instance
+     * @param $name
+     * @return mixed
+     */
+    public function beforeBooting($instance, $name);
+
+    /**
      * @param ManagerInterface $manager
      * @return mixed
      */

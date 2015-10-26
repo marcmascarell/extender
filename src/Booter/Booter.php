@@ -9,8 +9,6 @@ class Booter extends AbstractBooter implements BooterInterface {
      */
     public function boot($instance, $name)
     {
-        $this->beforeBooting($instance, $name);
-
         if (! $this->getManager()->isInstalled($name)) return false;
 
         return $instance->boot();
