@@ -147,13 +147,25 @@ class Manager implements ManagerInterface {
      * @param $name
      * @return mixed
      */
-    protected function getInstance($name)
+    protected function instantiate($name) {
+        return $this->extensions[$name]();
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function get($name)
     {
-        if (array_key_exists($name, $this->extensionInstances)) {
-            return $this->extensionInstances[$name];
+        if (isset($this->extensionInstances['installed'][$name])) {
+            return $this->extensionInstances['installed'][$name];
         }
 
-        return $this->extensions[$name]();
+        if (isset($this->extensionInstances['uninstalled'][$name])) {
+            return $this->extensionInstances['uninstalled'][$name];
+        }
+
+        throw new \Exception("Extension {$name} was not instantiated or registered");
     }
 
     /**
@@ -174,7 +186,7 @@ class Manager implements ManagerInterface {
         foreach ($this->extensions as $name => $closure) {
             $isInstalled = $this->isInstalled($name);
 
-            $instance = $this->getInstance($name);
+            $instance = $this->instantiate($name);
 
             if ($this->booter) {
                 if ($this->eventDispatcher) {
