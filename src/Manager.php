@@ -123,7 +123,38 @@ class Manager implements ManagerInterface {
      */
     public function getAll()
     {
-        return $this->extensionInstances;
+        return [
+            'installed' => $this->getInstalled(),
+            'uninstalled' => $this->getUninstalled(),
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getInstalled() {
+        $extensions = [];
+
+        foreach ($this->installer()->getInstalled() as $extension) {
+            $extensions[$extension] = $this->get($extension);
+        }
+
+        return $extensions;
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getUninstalled() {
+        $extensions = [];
+
+        foreach ($this->installer()->getUninstalled() as $extension) {
+            $extensions[$extension] = $this->get($extension);
+        }
+
+        return $extensions;
     }
 
     /**
@@ -154,15 +185,12 @@ class Manager implements ManagerInterface {
     /**
      * @param $name
      * @return mixed
+     * @throws \Exception
      */
     public function get($name)
     {
-        if (isset($this->extensionInstances['installed'][$name])) {
-            return $this->extensionInstances['installed'][$name];
-        }
-
-        if (isset($this->extensionInstances['uninstalled'][$name])) {
-            return $this->extensionInstances['uninstalled'][$name];
+        if (isset($this->extensionInstances[$name])) {
+            return $this->extensionInstances[$name];
         }
 
         throw new \Exception("Extension {$name} was not instantiated or registered");
@@ -184,8 +212,6 @@ class Manager implements ManagerInterface {
         if ($this->booted) return;
 
         foreach ($this->extensions as $name => $closure) {
-            $isInstalled = $this->isInstalled($name);
-
             $instance = $this->instantiate($name);
 
             if ($this->booter) {
@@ -198,11 +224,7 @@ class Manager implements ManagerInterface {
                 $this->booter->boot($instance, $name);
             }
 
-            if ($isInstalled) {
-                $this->extensionInstances['installed'][$name] = $instance;
-            } else {
-                $this->extensionInstances['uninstalled'][$name] = $instance;
-            }
+            $this->extensionInstances[$name] = $instance;
         }
 
         $this->installer->handleExtensionChanges(array_keys($this->extensions));
