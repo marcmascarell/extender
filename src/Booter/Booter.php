@@ -4,12 +4,14 @@ class Booter extends AbstractBooter implements BooterInterface {
 
     /**
      * @param $instance
-     * @param bool|false $isInstalled
+     * @param $name
      * @return bool
      */
-    public function boot($instance, $isInstalled = false)
+    public function boot($instance, $name)
     {
-        if (! $isInstalled) return false;
+        $this->beforeBooting($instance, $name);
+
+        if (! $this->getManager()->isInstalled($name)) return false;
 
         return $instance->boot();
     }
@@ -18,7 +20,7 @@ class Booter extends AbstractBooter implements BooterInterface {
      * @param $instance
      * @param $name
      */
-    public function setProperties($instance, $name) {
+    public function beforeBooting($instance, $name) {
         if (! $instance->namespace) $instance->namespace = $name;
     }
 }

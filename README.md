@@ -27,7 +27,23 @@ $installer = new \Mascame\Extender\Installer\FileInstaller(
              );
 
 $manager = new \Mascame\Extender\Manager($installer);
+
+
+class Foo() {}
+
+// register plugin
+$manager->add('foo-plugin', function() {
+    return new Foo();
+})
+
+// boot the plugins
 $manager->boot();
+
+// install plugin
+$manager->installer()->install('foo-plugin');
+
+// uninstall plugin
+$manager->installer()->uninstall('foo-plugin');
 ```
 Support
 ----

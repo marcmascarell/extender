@@ -7,17 +7,10 @@ interface BooterInterface {
 
     /**
      * @param $instance
-     * @param $isInstalled
-     * @return mixed
-     */
-    public function boot($instance, $isInstalled);
-
-    /**
-     * @param $instance
      * @param $name
      * @return mixed
      */
-    public function setProperties($instance, $name);
+    public function boot($instance, $name);
 
     /**
      * @param ManagerInterface $manager

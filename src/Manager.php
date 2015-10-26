@@ -177,8 +177,6 @@ class Manager implements ManagerInterface {
             $instance = $this->getInstance($name);
 
             if ($this->booter) {
-                $this->booter->setProperties($instance, $name);
-
                 if ($this->eventDispatcher) {
                     $this->booter->addListeners($this->getEvents(), $instance, $name);
                 }
