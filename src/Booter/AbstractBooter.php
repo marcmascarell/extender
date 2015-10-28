@@ -30,15 +30,6 @@ abstract class AbstractBooter implements BooterInterface {
     /**
      * @param $instance
      * @param $name
-     * @return mixed
-     */
-    public function beforeBooting($instance, $name) {
-        return null;
-    }
-
-    /**
-     * @param $instance
-     * @param $name
      * @throws \Exception
      */
     public function addListeners($events, $instance, $name)

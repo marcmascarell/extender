@@ -13,12 +13,4 @@ class Booter extends AbstractBooter implements BooterInterface {
 
         return $instance->boot();
     }
-
-    /**
-     * @param $instance
-     * @param $name
-     */
-    public function beforeBooting($instance, $name) {
-        if (! $instance->namespace) $instance->namespace = $name;
-    }
 }

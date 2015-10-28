@@ -6,13 +6,15 @@
  * Class LaravelEventDispatcher
  * @package Mascame\Extender\Event
  */
-class LaravelEventDispatcher implements EventInterface {
+class AbstractEvent implements EventInterface {
 
     /**
-     * @return \Illuminate\Events\Dispatcher
+     * @var EventInterface
      */
-    protected function getInstance() {
-        return app('events');
+    protected $eventDispatcher = null;
+
+    public function __construct($eventDispatcher) {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -22,7 +24,7 @@ class LaravelEventDispatcher implements EventInterface {
      */
     public function listen($eventName, $listener)
     {
-        $this->getInstance()->listen($eventName, $listener);
+        $this->eventDispatcher->listen($eventName, $listener);
     }
 
     /**
@@ -31,7 +33,7 @@ class LaravelEventDispatcher implements EventInterface {
      */
     public function fire($eventName)
     {
-        return $this->getInstance()->fire($eventName);
+        return $this->eventDispatcher->fire($eventName);
     }
 
 
