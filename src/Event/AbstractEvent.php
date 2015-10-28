@@ -9,6 +9,16 @@
 class AbstractEvent implements EventInterface {
 
     /**
+     * Event name => method name
+     *
+     * @var array
+     */
+    protected $events = [
+        'install' => 'install',
+        'uninstall' => 'uninstall',
+    ];
+
+    /**
      * @var EventInterface
      */
     protected $eventDispatcher = null;
@@ -36,5 +46,19 @@ class AbstractEvent implements EventInterface {
         return $this->eventDispatcher->fire($eventName);
     }
 
+    /**
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
 
+    /**
+     * @param array $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
+    }
 }

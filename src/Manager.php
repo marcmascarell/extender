@@ -37,16 +37,6 @@ class Manager implements ManagerInterface {
     protected $booted = false;
 
     /**
-     * Event name => method name
-     *
-     * @var array
-     */
-    protected $events = [
-        'install' => 'install',
-        'uninstall' => 'uninstall',
-    ];
-
-    /**
      * @param InstallerInterface $installer
      * @param BooterInterface|null $booter
      * @param EventInterface|null $eventDispatcher
@@ -93,22 +83,6 @@ class Manager implements ManagerInterface {
         } else if ($eventDispatcher) {
             throw new \Exception('Dispatcher must implement EventInterface');
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * @param array $events
-     */
-    public function setEvents($events)
-    {
-        $this->events = $events;
     }
 
     /**
@@ -216,7 +190,7 @@ class Manager implements ManagerInterface {
 
             if ($this->booter) {
                 if ($this->eventDispatcher) {
-                    $this->booter->addListeners($this->getEvents(), $instance, $name);
+                    $this->booter->addListeners($this->eventDispatcher->getEvents(), $instance, $name);
                 }
 
                 $this->booter->boot($instance, $name);

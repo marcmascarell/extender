@@ -7,13 +7,24 @@ interface EventInterface {
      * @param $listener
      * @return mixed
      */
-   public function listen($eventName, $listener);
+    public function listen($eventName, $listener);
 
     /**
      * @param $eventName
      * @return mixed
      */
-   public function fire($eventName);
+    public function fire($eventName);
 
+    /**
+     * @return mixed
+     */
+    public function getEvents();
 
+    /**
+     * [Event name => method name]
+     *
+     * @param array $events
+     * @return mixed
+     */
+    public function setEvents(array $events);
 }
