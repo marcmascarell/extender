@@ -3,48 +3,18 @@
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/extender.svg?style=flat-square)](https://github.com/marcmascarell/extender/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-Easily manage extensions or plugins
+Easily manage extensions or plugins. See the [full docs](https://extender.readme.io).
 
 Installation
 --------------
-Require this package in your composer.json and run composer update:
-
-    "mascame/extender": "dev-master"
-
-or:
-
+Require this package:
 ```sh
 composer require mascame/extender
 ```
 
-Usage
+[Documentation](https://extender.readme.io)
 --------------
 
-```php
-$installer = new \Mascame\Extender\Installer\FileInstaller(
-                 new \Mascame\Extender\Installer\FileWriter(),
-                 'path-to-file'
-             );
-
-$manager = new \Mascame\Extender\Manager($installer);
-
-
-class Foo() {}
-
-// register plugin
-$manager->add('foo-plugin', function() {
-    return new Foo();
-})
-
-// boot the plugins
-$manager->boot();
-
-// install plugin
-$manager->installer()->install('foo-plugin');
-
-// uninstall plugin
-$manager->installer()->uninstall('foo-plugin');
-```
 Support
 ----
 
