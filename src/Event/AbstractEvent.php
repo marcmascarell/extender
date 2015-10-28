@@ -9,7 +9,7 @@
 class AbstractEvent implements EventInterface {
 
     /**
-     * Event name => method name
+     * Event name => Extension method name
      *
      * @var array
      */

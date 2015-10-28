@@ -1,5 +1,6 @@
 <?php namespace Mascame\Extender;
 
+use Mascame\Extender\Booter\Booter;
 use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
@@ -59,12 +60,12 @@ class Manager implements ManagerInterface {
      * @throws \Exception
      */
     protected function setBooter($booter) {
-        if ($booter && is_a($booter, BooterInterface::class)) {
-            $this->booter = $booter;
-            $this->booter->setManager($this);
-        } else if ($booter) {
+        if (! $booter || ! is_a($booter, BooterInterface::class)) {
             throw new \Exception('Booter must implement BooterInterface');
         }
+
+        $this->booter = $booter;
+        $this->booter->setManager($this);
     }
 
     /**
@@ -90,6 +91,13 @@ class Manager implements ManagerInterface {
      */
     public function installer() {
         return $this->installer;
+    }
+
+    /**
+     * @return EventInterface
+     */
+    public function eventDispatcher() {
+        return $this->eventDispatcher;
     }
 
     /**
