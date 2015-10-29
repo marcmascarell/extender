@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat/128/plugin-icon.png" alt="Extender"/>
+</p>
+
 # Extender
 
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/extender.svg?style=flat-square)](https://github.com/marcmascarell/extender/releases)
