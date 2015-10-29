@@ -1,7 +1,7 @@
 {
   "name": "mascame/extender",
   "description": "Easily manage extensions or plugins",
-  "homepage": "https://github.com/marcmascarell/laravel-artificer",
+  "homepage": "https://github.com/marcmascarell/extender",
   "keywords": [
     "extend",
     "extensible",
