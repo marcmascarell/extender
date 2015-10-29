@@ -4,7 +4,6 @@
 
 # Extender
 
-[![Latest Version](https://img.shields.io/github/release/marcmascarell/extender.svg?style=flat-square)](https://github.com/marcmascarell/extender/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 Easily manage extensions or plugins. See the [full docs](https://extender.readme.io).
