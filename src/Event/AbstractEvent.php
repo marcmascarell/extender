@@ -57,7 +57,7 @@ class AbstractEvent implements EventInterface {
     /**
      * @param array $events
      */
-    public function setEvents($events)
+    public function setEvents(array $events)
     {
         $this->events = $events;
     }
