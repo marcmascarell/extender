@@ -1,6 +1,5 @@
 <?php namespace Mascame\Extender;
 
-use Mascame\Extender\Booter\Booter;
 use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
@@ -159,9 +158,14 @@ class Manager implements ManagerInterface {
     /**
      * @param $name
      * @return mixed
+     * @throws \Exception
      */
     protected function instantiate($name) {
-        return $this->extensions[$name]();
+        $instance = $this->extensions[$name]();
+
+        if ( ! $instance) throw new \Exception("Extension '{$name}' is not instantiable.");
+
+        return $instance;
     }
 
     /**
@@ -175,7 +179,7 @@ class Manager implements ManagerInterface {
             return $this->extensionInstances[$name];
         }
 
-        throw new \Exception("Extension {$name} was not instantiated or registered");
+        throw new \Exception("Extension '{$name}' was not registered.");
     }
 
     /**
@@ -193,6 +197,7 @@ class Manager implements ManagerInterface {
     {
         if ($this->booted) return;
 
+
         foreach ($this->extensions as $name => $closure) {
             $instance = $this->instantiate($name);
 
@@ -206,7 +211,7 @@ class Manager implements ManagerInterface {
 
             $this->extensionInstances[$name] = $instance;
         }
-
+        
         $this->installer->handleExtensionChanges(array_keys($this->extensions));
 
         $this->booted = true;
