@@ -90,10 +90,10 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
     {
         $extensionNamespace = 'coconut';
 
-        $pluginManager = new \Mascame\Extender\Manager($this->installer);
+        $pluginManager = new \Mascame\Extender\Manager($this->installer, new \Mascame\Extender\Booter\Booter());
 
         $pluginManager->add($extensionNamespace, function() {
-            return '';
+            return new TestExtensionManagerTest();
         });
 
         $registereds = $pluginManager->getRegistered();

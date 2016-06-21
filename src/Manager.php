@@ -59,12 +59,12 @@ class Manager implements ManagerInterface {
      * @throws \Exception
      */
     protected function setBooter($booter) {
-        if (! $booter || ! is_a($booter, BooterInterface::class)) {
+        if ($booter && is_a($booter, BooterInterface::class)) {
+            $this->booter = $booter;
+            $this->booter->setManager($this);
+        } else if ($booter) {
             throw new \Exception('Booter must implement BooterInterface');
         }
-
-        $this->booter = $booter;
-        $this->booter->setManager($this);
     }
 
     /**
@@ -196,7 +196,6 @@ class Manager implements ManagerInterface {
     public function boot()
     {
         if ($this->booted) return;
-
 
         foreach ($this->extensions as $name => $closure) {
             $instance = $this->instantiate($name);
