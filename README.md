@@ -4,7 +4,9 @@
 
 # Extender
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Packagist](https://img.shields.io/packagist/v/mascame/extender.svg?maxAge=2592000?style=plastic)](https://packagist.org/packages/mascame/arrayer)
+[![Travis](https://img.shields.io/travis/marcmascarell/extender.svg?maxAge=2592000?style=plastic)](https://travis-ci.org/marcmascarell/arrayer)
+[![license](https://img.shields.io/github/license/marcmascarell/extender.svg?maxAge=2592000?style=plastic)](https://github.com/marcmascarell/arrayer)
 
 Easily manage extensions or plugins. See the [full docs](https://extender.readme.io).
 
