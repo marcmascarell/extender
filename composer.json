@@ -20,7 +20,6 @@
     "mascame/arrayer": "3.*"
   },
   "require-dev": {
-    "sami/sami": "2.0.0",
     "codeception/codeception": "2.*"
   },
   "autoload": {
