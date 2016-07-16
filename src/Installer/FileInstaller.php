@@ -24,6 +24,13 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
     protected $config = [];
 
     /**
+     * @var array
+     */
+    protected $arrayBuilderConfig = [
+        'indexes' => false
+    ];
+
+    /**
      * @param FileWriterInterface $writer
      * @param $configPath
      */
@@ -166,7 +173,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
                 throw new \Exception("File not found {$file}");
             }
 
-            $result = $this->writer->put($file, (new Arrayer\Builder\ArrayBuilder($extensions))->getContent());
+            $result = $this->writer->put($file, (new Arrayer\Builder\ArrayBuilder($extensions, $this->arrayBuilderConfig))->getContent());
 
             if ($result) $this->config = $extensions;
         }
@@ -196,7 +203,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
             }
         }
 
-        $builder = new Arrayer\Builder\ArrayBuilder($this->config);
+        $builder = new Arrayer\Builder\ArrayBuilder($this->config, $this->arrayBuilderConfig);
         $this->writer->put($this->configFile, $builder->getContent());
     }
 
