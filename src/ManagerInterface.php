@@ -32,9 +32,9 @@ interface ManagerInterface {
 
     /**
      * @param $name
-     * @param \Closure $plugin
+     * @param $plugin
      */
-    public function add($name, \Closure $plugin);
+    public function add($name, $plugins);
 
     public function boot();
 }

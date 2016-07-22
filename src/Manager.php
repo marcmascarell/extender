@@ -150,7 +150,7 @@ class Manager implements ManagerInterface {
      * @param $name
      * @param \Closure $plugin
      */
-    public function add($name, \Closure $plugin)
+    public function add($name, $plugin)
     {
         $this->extensions[$name] = $plugin;
     }
