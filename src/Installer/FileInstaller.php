@@ -57,7 +57,6 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
 
     /**
      * @param $extensions
-     * @return bool
      */
     public function handleExtensionChanges($extensions)
     {
