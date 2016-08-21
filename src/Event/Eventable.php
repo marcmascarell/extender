@@ -34,27 +34,26 @@ trait Eventable {
     /**
      * @return bool
      */
-    public function isDispatchable()
+    public function hasDispatcher()
     {
         return ($this->eventDispatcher != null);
     }
 
     /**
      * @param $eventName
-     * @param $listener
+     * @param \Closure $callback
      * @return mixed
-     * @throws \Exception
      */
-    public function listen($eventName, $listener) {
-        return $this->getEventDispatcher()->listen($this->eventPrefix . $eventName, $listener);
+    public function listen($eventName, \Closure $callback) {
+        return $this->getEventDispatcher()->listen($this->eventPrefix . $eventName, $callback);
     }
 
     /**
      * @param $eventName
+     * @param array $params
      * @return mixed
-     * @throws \Exception
      */
-    public function fire($eventName) {
-        return $this->getEventDispatcher()->fire($this->eventPrefix . $eventName);
+    public function fire($eventName, $params = []) {
+        return $this->getEventDispatcher()->fire($this->eventPrefix . $eventName, $params);
     }
 }

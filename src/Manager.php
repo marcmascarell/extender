@@ -1,10 +1,13 @@
 <?php namespace Mascame\Extender;
 
 use Mascame\Extender\Booter\BooterInterface;
+use Mascame\Extender\Event\Eventable;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
 
 class Manager implements ManagerInterface {
+
+    use Eventable;
 
     /**
      * @var array
@@ -51,7 +54,7 @@ class Manager implements ManagerInterface {
         $this->installer = $installer;
 
         $this->setBooter($booter);
-        $this->setEventDispatcher($eventDispatcher);
+        $this->setEventDispatchers($eventDispatcher);
     }
 
     /**
@@ -71,7 +74,7 @@ class Manager implements ManagerInterface {
      * @param $eventDispatcher
      * @throws \Exception
      */
-    protected function setEventDispatcher($eventDispatcher) {
+    protected function setEventDispatchers($eventDispatcher) {
         if ($eventDispatcher && is_a($eventDispatcher, EventInterface::class)) {
             $this->eventDispatcher = $eventDispatcher;
 
@@ -201,11 +204,15 @@ class Manager implements ManagerInterface {
             $instance = $this->instantiate($name);
 
             if ($this->booter) {
-                if ($this->eventDispatcher) {
-                    $this->booter->addListeners($this->eventDispatcher->getEvents(), $instance, $name);
+                if ($this->hasDispatcher()) {
+                    $this->eventDispatcher->fire('before.boot.' . $name, [$instance]);
                 }
 
                 $this->booter->boot($instance, $name);
+
+                if ($this->hasDispatcher()) {
+                    $this->eventDispatcher->fire('after.boot.' . $name, [$instance]);
+                }
             }
 
             $this->extensionInstances[$name] = $instance;

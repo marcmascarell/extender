@@ -85,10 +85,14 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @throws \Exception
      */
     public function install($extension) {
+        if ($this->hasDispatcher()) {
+            $this->fire("before.install.{$extension}", [$extension]);
+        }
+
         if (! $this->action($extension, 'install')) return false;
 
-        if ($this->isDispatchable()) {
-            $this->fire("install.{$extension}");
+        if ($this->hasDispatcher()) {
+            $this->fire("after.install.{$extension}", [$extension]);
         }
 
         return true;
@@ -100,10 +104,14 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @throws \Exception
      */
     public function uninstall($extension) {
+        if ($this->hasDispatcher()) {
+            $this->fire("before.uninstall.{$extension}", [$extension]);
+        }
+
         if (! $this->action($extension, 'uninstall')) return false;
 
-        if ($this->isDispatchable()) {
-            $this->fire("uninstall.{$extension}");
+        if ($this->hasDispatcher()) {
+            $this->fire("uninstall.{$extension}", [$extension]);
         }
 
         return true;
