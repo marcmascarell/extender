@@ -49,8 +49,8 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
         $config = require $this->configFile;
 
         // Set defaults if empty
-        if (!isset($config['installed'])) $config['installed'] = [];
-        if (!isset($config['uninstalled'])) $config['uninstalled'] = [];
+        if (!isset($config[self::STATUS_INSTALLED])) $config[self::STATUS_INSTALLED] = [];
+        if (!isset($config[self::STATUS_UNINSTALLED])) $config[self::STATUS_UNINSTALLED] = [];
 
         return $config;
     }
@@ -62,7 +62,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
     {
         if (empty($extensions)) return;
 
-        $configExtensions = array_merge($this->config['installed'], $this->config['uninstalled']);
+        $configExtensions = array_merge($this->config[self::STATUS_INSTALLED], $this->config[self::STATUS_UNINSTALLED]);
         $added = array_diff($extensions, $configExtensions);
         $removed = array_diff($configExtensions, $extensions);
 
@@ -76,7 +76,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @return bool
      */
     public function isInstalled($name) {
-        return isset($this->config['installed']) && in_array($name, $this->config['installed']);
+        return isset($this->config[self::STATUS_INSTALLED]) && in_array($name, $this->config[self::STATUS_INSTALLED]);
     }
 
     /**
@@ -85,17 +85,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @throws \Exception
      */
     public function install($extension) {
-        if ($this->hasDispatcher()) {
-            $this->fire("before.install.{$extension}", [$extension]);
-        }
-
-        if (! $this->action($extension, 'install')) return false;
-
-        if ($this->hasDispatcher()) {
-            $this->fire("after.install.{$extension}", [$extension]);
-        }
-
-        return true;
+        return $this->action($extension, self::ACTION_INSTALL);
     }
 
     /**
@@ -104,33 +94,23 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @throws \Exception
      */
     public function uninstall($extension) {
-        if ($this->hasDispatcher()) {
-            $this->fire("before.uninstall.{$extension}", [$extension]);
-        }
-
-        if (! $this->action($extension, 'uninstall')) return false;
-
-        if ($this->hasDispatcher()) {
-            $this->fire("uninstall.{$extension}", [$extension]);
-        }
-
-        return true;
+        return $this->action($extension, self::ACTION_UNINSTALL);
     }
 
     /**
      * @param $extension
-     * @param $operation
+     * @param $action
      * @return bool
      * @throws \Exception
      */
-    protected function action($extension, $operation)
+    protected function action($extension, $action)
     {
-        $from = 'installed';
-        $to = 'uninstalled';
+        $from = self::STATUS_INSTALLED;
+        $to = self::STATUS_UNINSTALLED;
 
-        if ($operation == 'install') {
-            $from = 'uninstalled';
-            $to = 'installed';
+        if ($action == self::ACTION_INSTALL) {
+            $from = self::STATUS_UNINSTALLED;
+            $to = self::STATUS_INSTALLED;
         }
 
         if (isset($this->config[$to])) {
@@ -139,7 +119,17 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
             }
         }
 
-        return $this->makeOperation($this->config, $extension, $from, $to);
+        if ($this->hasDispatcher()) {
+            $this->fire("before.{$action}.{$extension}", [$extension]);
+        }
+
+        $result = $this->makeOperation($this->config, $extension, $from, $to);
+
+        if ($this->hasDispatcher()) {
+            $this->fire("after.{$action}.{$extension}", [$extension]);
+        }
+
+        return $result;
     }
 
     /**
@@ -195,17 +185,17 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
     protected function generateConfigFile($added, $removed)
     {
         foreach ($added as $name) {
-            $this->config['uninstalled'][] = $name;
+            $this->config[self::STATUS_UNINSTALLED][] = $name;
         }
 
         foreach ($removed as $name) {
-            if (($key = array_search($name, $this->config['installed'])) !== false) {
-                unset($this->config['installed'][$key]);
+            if (($key = array_search($name, $this->config[self::STATUS_INSTALLED])) !== false) {
+                unset($this->config[self::STATUS_INSTALLED][$key]);
                 continue;
             }
 
-            if (($key = array_search($name, $this->config['uninstalled'])) !== false) {
-                unset($this->config['uninstalled'][$key]);
+            if (($key = array_search($name, $this->config[self::STATUS_UNINSTALLED])) !== false) {
+                unset($this->config[self::STATUS_UNINSTALLED][$key]);
                 continue;
             }
         }
@@ -219,7 +209,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      */
     public function getInstalled()
     {
-        return isset($this->config['installed']) ? $this->config['installed'] : [];
+        return isset($this->config[self::STATUS_INSTALLED]) ? $this->config[self::STATUS_INSTALLED] : [];
     }
 
     /**
@@ -227,6 +217,6 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      */
     public function getUninstalled()
     {
-        return isset($this->config['uninstalled']) ? $this->config['uninstalled'] : [];
+        return isset($this->config[self::STATUS_UNINSTALLED]) ? $this->config[self::STATUS_UNINSTALLED] : [];
     }
 }
