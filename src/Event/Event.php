@@ -1,10 +1,13 @@
-<?php namespace Mascame\Extender\Event;
+<?php
 
-class Event implements EventInterface {
+namespace Mascame\Extender\Event;
 
+class Event implements EventInterface
+{
     use Eventable;
 
-    public function __construct($eventDispatcher) {
+    public function __construct($eventDispatcher)
+    {
         $this->setEventDispatcher($eventDispatcher);
     }
 }

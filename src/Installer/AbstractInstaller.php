@@ -1,8 +1,11 @@
-<?php namespace Mascame\Extender\Installer;
+<?php
+
+namespace Mascame\Extender\Installer;
 
 use Mascame\Extender\Event\Eventable;
 
-abstract class AbstractInstaller implements InstallerInterface {
+abstract class AbstractInstaller implements InstallerInterface
+{
     use Eventable;
 
     const STATUS_INSTALLED = 'installed';

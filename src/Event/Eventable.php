@@ -1,7 +1,9 @@
-<?php namespace Mascame\Extender\Event;
+<?php
 
-trait Eventable {
+namespace Mascame\Extender\Event;
 
+trait Eventable
+{
     /**
      * @var string
      */
@@ -18,7 +20,9 @@ trait Eventable {
      */
     public function getEventDispatcher()
     {
-        if (! $this->eventDispatcher) throw new \Exception('No event dispatcher provided');
+        if (! $this->eventDispatcher) {
+            throw new \Exception('No event dispatcher provided');
+        }
 
         return $this->eventDispatcher;
     }
@@ -36,7 +40,7 @@ trait Eventable {
      */
     public function hasDispatcher()
     {
-        return ($this->eventDispatcher != null);
+        return $this->eventDispatcher != null;
     }
 
     /**
@@ -44,8 +48,9 @@ trait Eventable {
      * @param \Closure $callback
      * @return mixed
      */
-    public function listen($eventName, \Closure $callback) {
-        return $this->getEventDispatcher()->listen($this->eventPrefix . $eventName, $callback);
+    public function listen($eventName, \Closure $callback)
+    {
+        return $this->getEventDispatcher()->listen($this->eventPrefix.$eventName, $callback);
     }
 
     /**
@@ -53,7 +58,8 @@ trait Eventable {
      * @param array $params
      * @return mixed
      */
-    public function fire($eventName, $params = []) {
-        return $this->getEventDispatcher()->fire($this->eventPrefix . $eventName, $params);
+    public function fire($eventName, $params = [])
+    {
+        return $this->getEventDispatcher()->fire($this->eventPrefix.$eventName, $params);
     }
 }

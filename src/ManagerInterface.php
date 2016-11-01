@@ -1,9 +1,11 @@
-<?php namespace Mascame\Extender;
+<?php
+
+namespace Mascame\Extender;
 
 use Mascame\Extender\Installer\InstallerInterface;
 
-interface ManagerInterface {
-
+interface ManagerInterface
+{
     /**
      * @param InstallerInterface $installer
      */

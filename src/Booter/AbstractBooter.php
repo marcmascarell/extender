@@ -1,9 +1,12 @@
-<?php namespace Mascame\Extender\Booter;
+<?php
+
+namespace Mascame\Extender\Booter;
 
 use Mascame\Extender\Event\Eventable;
 use Mascame\Extender\ManagerInterface;
 
-abstract class AbstractBooter implements BooterInterface {
+abstract class AbstractBooter implements BooterInterface
+{
     use Eventable;
 
     /**
@@ -35,13 +38,11 @@ abstract class AbstractBooter implements BooterInterface {
     public function addListeners($events, $instance, $name)
     {
         foreach ($events as $eventName => $eventMethod) {
-
             if (method_exists($instance, $eventMethod)) {
-                $this->listen($eventName . '.' . $name, function() use ($instance, $eventMethod) {
+                $this->listen($eventName.'.'.$name, function () use ($instance, $eventMethod) {
                     $instance->{$eventMethod}();
                 });
             }
-
         }
     }
 }
