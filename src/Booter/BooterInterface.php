@@ -1,10 +1,12 @@
-<?php namespace Mascame\Extender\Booter;
+<?php
+
+namespace Mascame\Extender\Booter;
 
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\ManagerInterface;
 
-interface BooterInterface {
-
+interface BooterInterface
+{
     /**
      * @param $instance
      * @param $name

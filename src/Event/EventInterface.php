@@ -1,7 +1,9 @@
-<?php namespace Mascame\Extender\Event;
+<?php
 
-interface EventInterface {
+namespace Mascame\Extender\Event;
 
+interface EventInterface
+{
     /**
      * @param $eventName
      * @param \Closure $callback
@@ -15,5 +17,4 @@ interface EventInterface {
      * @return mixed
      */
     public function fire($eventName, $params = []);
-
 }

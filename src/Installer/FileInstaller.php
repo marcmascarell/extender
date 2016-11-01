@@ -1,13 +1,14 @@
-<?php namespace Mascame\Extender\Installer;
+<?php
+
+namespace Mascame\Extender\Installer;
 
 use Mascame\Arrayer;
 
 /**
- * Class FileInstaller
- * @package Mascame\Extender\Installer
+ * Class FileInstaller.
  */
-class FileInstaller extends AbstractInstaller implements InstallerInterface {
-
+class FileInstaller extends AbstractInstaller implements InstallerInterface
+{
     /**
      * @var string
      */
@@ -27,14 +28,15 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @var array
      */
     protected $arrayBuilderConfig = [
-        'indexes' => false
+        'indexes' => false,
     ];
 
     /**
      * @param FileWriterInterface $writer
      * @param $configPath
      */
-    public function __construct(FileWriterInterface $writer, $configPath) {
+    public function __construct(FileWriterInterface $writer, $configPath)
+    {
         $this->writer = $writer;
         $this->configFile = $configPath;
         $this->config = $this->getConfig();
@@ -43,14 +45,21 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
     /**
      * @return array|mixed
      */
-    public function getConfig() {
-        if (! empty($this->config)) return $this->config;
+    public function getConfig()
+    {
+        if (! empty($this->config)) {
+            return $this->config;
+        }
 
         $config = require $this->configFile;
 
         // Set defaults if empty
-        if (!isset($config[self::STATUS_INSTALLED])) $config[self::STATUS_INSTALLED] = [];
-        if (!isset($config[self::STATUS_UNINSTALLED])) $config[self::STATUS_UNINSTALLED] = [];
+        if (! isset($config[self::STATUS_INSTALLED])) {
+            $config[self::STATUS_INSTALLED] = [];
+        }
+        if (! isset($config[self::STATUS_UNINSTALLED])) {
+            $config[self::STATUS_UNINSTALLED] = [];
+        }
 
         return $config;
     }
@@ -60,7 +69,9 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      */
     public function handleExtensionChanges($extensions)
     {
-        if (empty($extensions)) return;
+        if (empty($extensions)) {
+            return;
+        }
 
         $configExtensions = array_merge($this->config[self::STATUS_INSTALLED], $this->config[self::STATUS_UNINSTALLED]);
         $added = array_diff($extensions, $configExtensions);
@@ -68,14 +79,17 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
 
         $needsUpdate = (! empty($added) || ! empty($removed) || count($configExtensions) != count($extensions));
 
-        if ($needsUpdate) $this->generateConfigFile($added, $removed);
+        if ($needsUpdate) {
+            $this->generateConfigFile($added, $removed);
+        }
     }
 
     /**
      * @param $name
      * @return bool
      */
-    public function isInstalled($name) {
+    public function isInstalled($name)
+    {
         return isset($this->config[self::STATUS_INSTALLED]) && in_array($name, $this->config[self::STATUS_INSTALLED]);
     }
 
@@ -84,7 +98,8 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @return bool
      * @throws \Exception
      */
-    public function install($extension) {
+    public function install($extension)
+    {
         return $this->action($extension, self::ACTION_INSTALL);
     }
 
@@ -93,7 +108,8 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
      * @return bool
      * @throws \Exception
      */
-    public function uninstall($extension) {
+    public function uninstall($extension)
+    {
         return $this->action($extension, self::ACTION_UNINSTALL);
     }
 
@@ -145,7 +161,7 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
         try {
             $this->modifyFile($this->configFile, $extensions, $plugin, $from, $to);
         } catch (\Exception $e) {
-            throw new \Exception("Failed to modify plugins config");
+            throw new \Exception('Failed to modify plugins config');
         }
 
         return true;
@@ -166,13 +182,15 @@ class FileInstaller extends AbstractInstaller implements InstallerInterface {
             unset($extensions[$from][$key]);
             $extensions[$to][] = $plugin;
 
-            if (!file_exists($file)) {
+            if (! file_exists($file)) {
                 throw new \Exception("File not found {$file}");
             }
 
             $result = $this->writer->put($file, (new Arrayer\Builder\ArrayBuilder($extensions, $this->arrayBuilderConfig))->getContent());
 
-            if ($result) $this->config = $extensions;
+            if ($result) {
+                $this->config = $extensions;
+            }
         }
 
         return false;

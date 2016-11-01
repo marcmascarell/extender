@@ -11,7 +11,8 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
 
     protected $registeredExtensions = ['Maria', 'Jose', 'Eva', 'Adan'];
 
-    public function setup() {
+    public function setup()
+    {
         parent::setUp();
 
         $this->prepareFile();
@@ -22,17 +23,20 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->deleteFile();
 
         parent::tearDown();
     }
 
-    protected function getConfigFile() {
-        return __DIR__ . '/../_data/' . (self::CONFIG_FILE);
+    protected function getConfigFile()
+    {
+        return __DIR__.'/../_data/'.(self::CONFIG_FILE);
     }
 
-    protected function prepareFile() {
+    protected function prepareFile()
+    {
         $file = $this->getConfigFile();
 
         if (! file_exists($this->getConfigFile())) {
@@ -40,11 +44,13 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function deleteFile() {
+    protected function deleteFile()
+    {
         @unlink($this->getConfigFile());
     }
 
-    public function test_installer_removes_not_registered_extensions() {
+    public function test_installer_removes_not_registered_extensions()
+    {
         $config = $this->installer->getConfig();
 
         $this->assertTrue(isset($config['installed']['remove-me']));
@@ -92,7 +98,7 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
 
         $pluginManager = new \Mascame\Extender\Manager($this->installer, new \Mascame\Extender\Booter\Booter());
 
-        $pluginManager->add($extensionNamespace, function() {
+        $pluginManager->add($extensionNamespace, function () {
             return new TestExtensionManagerTest();
         });
 

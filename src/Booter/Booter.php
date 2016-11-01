@@ -1,7 +1,9 @@
-<?php namespace Mascame\Extender\Booter;
+<?php
 
-class Booter extends AbstractBooter implements BooterInterface {
+namespace Mascame\Extender\Booter;
 
+class Booter extends AbstractBooter implements BooterInterface
+{
     /**
      * @param $instance
      * @param $name
@@ -9,7 +11,9 @@ class Booter extends AbstractBooter implements BooterInterface {
      */
     public function boot($instance, $name)
     {
-        if (! $this->getManager()->isInstalled($name)) return false;
+        if (! $this->getManager()->isInstalled($name)) {
+            return false;
+        }
 
         return $instance->boot();
     }

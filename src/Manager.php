@@ -1,12 +1,14 @@
-<?php namespace Mascame\Extender;
+<?php
+
+namespace Mascame\Extender;
 
 use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\Eventable;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
 
-class Manager implements ManagerInterface {
-
+class Manager implements ManagerInterface
+{
     use Eventable;
 
     /**
@@ -49,8 +51,7 @@ class Manager implements ManagerInterface {
         InstallerInterface $installer,
         BooterInterface $booter = null,
         EventInterface $eventDispatcher = null
-    )
-    {
+    ) {
         $this->installer = $installer;
 
         $this->setBooter($booter);
@@ -61,11 +62,12 @@ class Manager implements ManagerInterface {
      * @param $booter
      * @throws \Exception
      */
-    protected function setBooter($booter) {
+    protected function setBooter($booter)
+    {
         if ($booter && is_a($booter, BooterInterface::class)) {
             $this->booter = $booter;
             $this->booter->setManager($this);
-        } else if ($booter) {
+        } elseif ($booter) {
             throw new \Exception('Booter must implement BooterInterface');
         }
     }
@@ -74,7 +76,8 @@ class Manager implements ManagerInterface {
      * @param $eventDispatcher
      * @throws \Exception
      */
-    protected function setEventDispatchers($eventDispatcher) {
+    protected function setEventDispatchers($eventDispatcher)
+    {
         if ($eventDispatcher && is_a($eventDispatcher, EventInterface::class)) {
             $this->eventDispatcher = $eventDispatcher;
 
@@ -83,7 +86,7 @@ class Manager implements ManagerInterface {
             }
 
             $this->installer->setEventDispatcher($this->eventDispatcher);
-        } else if ($eventDispatcher) {
+        } elseif ($eventDispatcher) {
             throw new \Exception('Dispatcher must implement EventInterface');
         }
     }
@@ -91,14 +94,16 @@ class Manager implements ManagerInterface {
     /**
      * @return InstallerInterface
      */
-    public function installer() {
+    public function installer()
+    {
         return $this->installer;
     }
 
     /**
      * @return EventInterface
      */
-    public function eventDispatcher() {
+    public function eventDispatcher()
+    {
         return $this->eventDispatcher;
     }
 
@@ -117,7 +122,8 @@ class Manager implements ManagerInterface {
      * @return array
      * @throws \Exception
      */
-    public function getInstalled() {
+    public function getInstalled()
+    {
         $extensions = [];
 
         foreach ($this->installer()->getInstalled() as $extension) {
@@ -131,7 +137,8 @@ class Manager implements ManagerInterface {
      * @return array
      * @throws \Exception
      */
-    public function getUninstalled() {
+    public function getUninstalled()
+    {
         $extensions = [];
 
         foreach ($this->installer()->getUninstalled() as $extension) {
@@ -163,10 +170,13 @@ class Manager implements ManagerInterface {
      * @return mixed
      * @throws \Exception
      */
-    protected function instantiate($name) {
+    protected function instantiate($name)
+    {
         $instance = $this->extensions[$name]();
 
-        if ( ! $instance) throw new \Exception("Extension '{$name}' is not instantiable.");
+        if (! $instance) {
+            throw new \Exception("Extension '{$name}' is not instantiable.");
+        }
 
         return $instance;
     }
@@ -189,38 +199,38 @@ class Manager implements ManagerInterface {
      * @param $name
      * @return mixed
      */
-    public function isInstalled($name) {
+    public function isInstalled($name)
+    {
         return $this->installer->isInstalled($name);
     }
 
-    /**
-     *
-     */
+
     public function boot()
     {
-        if ($this->booted) return;
+        if ($this->booted) {
+            return;
+        }
 
         foreach ($this->extensions as $name => $closure) {
             $instance = $this->instantiate($name);
 
             if ($this->booter) {
                 if ($this->hasDispatcher()) {
-                    $this->eventDispatcher->fire('before.boot.' . $name, [$instance]);
+                    $this->eventDispatcher->fire('before.boot.'.$name, [$instance]);
                 }
 
                 $this->booter->boot($instance, $name);
 
                 if ($this->hasDispatcher()) {
-                    $this->eventDispatcher->fire('after.boot.' . $name, [$instance]);
+                    $this->eventDispatcher->fire('after.boot.'.$name, [$instance]);
                 }
             }
 
             $this->extensionInstances[$name] = $instance;
         }
-        
+
         $this->installer->handleExtensionChanges(array_keys($this->extensions));
 
         $this->booted = true;
     }
-
 }

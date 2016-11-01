@@ -1,7 +1,9 @@
-<?php namespace Mascame\Extender\Installer;
+<?php
 
-interface FileWriterInterface {
+namespace Mascame\Extender\Installer;
 
+interface FileWriterInterface
+{
     /**
      * @param $path
      * @param $contents

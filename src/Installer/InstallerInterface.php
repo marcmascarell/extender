@@ -1,12 +1,14 @@
-<?php namespace Mascame\Extender\Installer;
+<?php
+
+namespace Mascame\Extender\Installer;
 
 use Mascame\Extender\Event\EventInterface;
 
-interface InstallerInterface {
-
+interface InstallerInterface
+{
     /**
      * Compares registered extensions and current stored extensions and
-     * adds or removes them in case of changes
+     * adds or removes them in case of changes.
      *
      * @param $extensions
      * @return mixed
@@ -50,5 +52,4 @@ interface InstallerInterface {
      * @param EventInterface $eventDispatcher
      */
     public function setEventDispatcher($eventDispatcher);
-
 }
