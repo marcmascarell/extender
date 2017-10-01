@@ -2,8 +2,8 @@
 
 namespace Mascame\Extender\Booter;
 
-use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\ManagerInterface;
+use Mascame\Extender\Event\EventInterface;
 
 interface BooterInterface
 {

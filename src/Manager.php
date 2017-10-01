@@ -2,9 +2,9 @@
 
 namespace Mascame\Extender;
 
-use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\Eventable;
 use Mascame\Extender\Event\EventInterface;
+use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Installer\InstallerInterface;
 
 class Manager implements ManagerInterface
@@ -203,7 +203,6 @@ class Manager implements ManagerInterface
     {
         return $this->installer->isInstalled($name);
     }
-
 
     public function boot()
     {
