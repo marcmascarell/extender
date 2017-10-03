@@ -1,6 +1,6 @@
 <?php
 
-class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
+class ExtensionManagerTest extends \PHPUnit_Framework_TestCase
 {
     const CONFIG_FILE = 'extensions-test.php';
 
@@ -99,7 +99,7 @@ class TestExtensionManagerTest extends \PHPUnit_Framework_TestCase
         $pluginManager = new \Mascame\Extender\Manager($this->installer, new \Mascame\Extender\Booter\Booter());
 
         $pluginManager->add($extensionNamespace, function () {
-            return new TestExtensionManagerTest();
+            return new ExtensionManagerTest();
         });
 
         $registereds = $pluginManager->getRegistered();
